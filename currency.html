@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+
+            fetch('https://api.exchangerate.host/latest')
+                .then(response => response.json())
+                .then(data => {
+                    const currency = document.querySelector('#currency').value;
+                    const USD = data.rates.USD;
+                    const EUR = data.rates.EUR;
+                    const UAH = data.rates.UAH;
+                    document.querySelector('#UAH').innerHTML = `1 EUR = ${UAH.toFixed(2)} UAH`;
+                    document.querySelector('#USD').innerHTML = `1 EUR = ${USD.toFixed(2)} USD`;
+                    document.querySelector('#EUR').innerHTML = `1 EUR = ${EUR.toFixed(2)} EUR`;
+                });
+
+
+            document.querySelector('form').onsubmit = function (){
+                fetch('https://api.exchangerate.host/latest')
+                .then(response => response.json())
+                .then(data => {
+                    const currency = document.querySelector('#currency').value;
+                    const rate = data.rates[currency];
+                    if (rate !== undefined){
+                        document.querySelector('#result').innerHTML = `1 EUR = ${rate.toFixed(2)} ${currency}`;
+                    }else{
+                        document.querySelector('#result').innerHTML = 'invalid currency.';
+                    }
+                    
+                });
+
+                return false;
+            }
+
+         
+        });
+    </script>
+</head>
+<body>
+    <h1>Currency</h1>
+    <div>
+        <h2>Курс гривні</h2>
+        <p id="UAH"></p>
+    </div>
+    <div>
+        <h2>Курс доллара</h2>
+        <p id="USD"></p>
+    </div>
+    <div>
+        <h2>Курс евро</h2>
+        <p id="EUR"></p>
+    </div>
+    <form>
+        <input type="text" placeholder="Currency" id="currency">
+        <input type="submit" value="Convert">
+    </form>
+    <div id="result"></div>
+    
+</body>
+</html>
