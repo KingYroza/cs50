@@ -11,13 +11,16 @@
             fetch('https://api.exchangerate.host/latest')
                 .then(response => response.json())
                 .then(data => {
-                    const currency = document.querySelector('#currency').value;
+                    const currency = document.querySelector('#currency').value.toUpperCase();
                     const USD = data.rates.USD;
                     const EUR = data.rates.EUR;
                     const UAH = data.rates.UAH;
                     document.querySelector('#UAH').innerHTML = `1 EUR = ${UAH.toFixed(2)} UAH`;
                     document.querySelector('#USD').innerHTML = `1 EUR = ${USD.toFixed(2)} USD`;
                     document.querySelector('#EUR').innerHTML = `1 EUR = ${EUR.toFixed(2)} EUR`;
+                })
+                .catch(error => {
+                    console.log('Eroor:', error);
                 });
 
 
@@ -25,7 +28,7 @@
                 fetch('https://api.exchangerate.host/latest')
                 .then(response => response.json())
                 .then(data => {
-                    const currency = document.querySelector('#currency').value;
+                    const currency = document.querySelector('#currency').value.toUpperCase();
                     const rate = data.rates[currency];
                     if (rate !== undefined){
                         document.querySelector('#result').innerHTML = `1 EUR = ${rate.toFixed(2)} ${currency}`;
@@ -33,6 +36,9 @@
                         document.querySelector('#result').innerHTML = 'invalid currency.';
                     }
                     
+                })
+                .catch(error => {
+                    console.log('Eroor:', error);
                 });
 
                 return false;
