@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts</title>
+    <style>
+
+        @keyframes hide {
+            0%{
+                opacity: 1;
+                height: 100%;
+                line-height: 100%;
+                padding: 20px;
+                margin: 5px;
+            }
+            75%{
+                opacity: 0;
+                height: 100%;
+                line-height: 100%;
+                padding: 20px;
+                margin: 5px;
+            }
+            100%{
+                opacity: 0;
+                height: 0px;
+                line-height: 0px;
+                padding: 0px;
+                margin: 0px;
+            }
+
+        }
+        .post {
+            background-color: aqua;
+            font-size: 20px;
+            animation-name: hide;
+            animation-duration: 2s;
+            animation-fill-mode: forwards;
+            animation-play-state: paused;
+        }
+        button {
+            float: right;
+            margin-right: 30px;
+        }
+
+    </style>
+    <script>
+        let counter = 1;
+
+        const quantity = 20;
+
+        document.addEventListener('DOMContentLoaded', load);
+
+        window.onscroll = () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+                load();
+            }
+        };
+
+        document.addEventListener('click', event => {
+            const elem = event.target;
+            if (elem.className === 'hide'){
+                elem.parentElement.style.animationPlayState = 'running';
+                elem.parentElement.addEventListener('animationend', () => {
+                    elem.parentElement.remove();
+                });
+            }
+        });
+
+        function load(){
+            const start = counter;
+            const end = start + quantity - 1;
+            counter = end + 1;
+            
+            for (let i = start; i < counter; i++) {
+
+                const post = document.createElement('div');
+                post.className = 'post';
+                post.innerHTML = `Post # ${i} <button class="hide">Hide</button>`;
+                document.querySelector('#posts').append(post);
+            };
+            // metod JSON
+
+            //fetch(`/posts?start=${start}&end=${end}`)
+            //.then(response => response.json())
+            //.then(data => {
+            //     data.posts.forEach(add_post);
+            //});
+
+            //function add_post(contents) {
+            //   const post = document.createElement('div');
+            //   post.className = 'post';
+            //   post.innerHTML = contents;
+            //   document.querySelector('#posts').append(post);
+            //};   
+        };
+    </script>
+</head>
+<body>
+    <div id="posts"></div>
+</body>
+</html>
